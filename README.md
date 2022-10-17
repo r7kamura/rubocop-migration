@@ -26,6 +26,8 @@ Note that all cops are `Enabled: false` by default.
 
 ## Cops
 
+Please read the comments of the respective cop classes for more information.
+
 - [Migration/AddCheckConstraint](lib/rubocop/cop/migration/add_check_constraint.rb)
 - [Migration/AddColumnWithDefaultValue](lib/rubocop/cop/migration/add_column_with_default_value.rb)
 - [Migration/AddForeignKey](lib/rubocop/cop/migration/add_foreign_key.rb)
