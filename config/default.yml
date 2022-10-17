@@ -1,0 +1,142 @@
+Migration/AddCheckConstraint:
+  Description: |
+    Activate a check constraint in a separate migration in PostgreSQL.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/AddColumnWithDefaultValue:
+  Description: |
+    Add the column without a default value then change the default.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/AddForeignKey:
+  Description: |
+    Activate a foreign key validation in a separate migration in PostgreSQL.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/AddIndexConcurrently:
+  Description: |
+    Use `algorithm: :concurrently` on adding indexes to existing tables in PostgreSQL.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/BatchInBatches:
+  Description: |
+    Use `in_batches` in batch processing.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/BatchInTransaction:
+  Description: |
+    Disable transaction in batch processing.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/BatchWithThrottling:
+  Description: |
+    Use throttling in batch processing.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/CreateTableForce:
+  Description: |
+    Create tables without `force: true` option.
+  Enabled: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/Jsonb:
+  Description: |
+    Prefer `jsonb` to `json`.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/ChangeColumn:
+  Description: |
+    Avoid changing column type that is in use.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/ChangeColumnNull:
+  Description: |
+    Avoid simply setting `NOT NULL` constraint on an existing column in PostgreSQL.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/RemoveColumn:
+  Description: |
+    Add to `ignored_columns` and then remove the column.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/RenameColumn:
+  Description: |
+    Avoid renaming columns that are in use.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/RenameTable:
+  Description: |
+    Avoid removing tables that are in use.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/ReservedWordMysql:
+  Description: |
+    Avoid using MySQL reserved words as identifiers.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.20'
+  Include:
+    - db/migrate/**/*.rb
+
+Migration/UniqueIndexColumnsCount:
+  Description: |
+    Keep unique index columns count less than a specified number.
+  Enabled: false
+  VersionAdded: '0.22'
+  MaxColumnsCount: 3
+  Include:
+    - db/migrate/**/*.rb

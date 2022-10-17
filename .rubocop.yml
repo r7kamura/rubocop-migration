@@ -2,6 +2,7 @@ require:
   - rubocop-performance
   - rubocop-rake
   - rubocop-rspec
+  - sevencop
 
 AllCops:
   NewCops: enable
@@ -9,4 +10,47 @@ AllCops:
 
 # To automate release workflow.
 Gemspec/RequireMFA:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+Metrics:
+  Enabled: false
+
+RSpec:
+  Language:
+    Expectations:
+      - expect_correction
+      - expect_no_offenses
+      - expect_offense
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+Sevencop/AutoloadOrdered:
+  Enabled: true
+
+Sevencop/HashElementOrdered:
+  Enabled: true
+
+Sevencop/MethodDefinitionArgumentsMultiline:
+  Enabled: true
+
+Sevencop/MethodDefinitionKeywordArgumentOrdered:
+  Enabled: true
+
+Sevencop/MethodDefinitionOrdered:
+  Enabled: true
+
+Sevencop/RequireOrdered:
+  Enabled: true
+
+Style/Documentation:
+  Enabled: false
+
+Style/MultilineBlockChain:
   Enabled: false
