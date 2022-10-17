@@ -6,3 +6,7 @@ require:
 AllCops:
   NewCops: enable
   TargetRubyVersion: 2.7
+
+# To automate release workflow.
+Gemspec/RequireMFA:
+  Enabled: false
