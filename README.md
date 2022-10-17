@@ -37,3 +37,9 @@ require:
 - [Migration/RenameTable](lib/rubocop/cop/migration/rename_table.rb)
 - [Migration/ReservedWordMysql](lib/rubocop/cop/migration/reserved_word_mysql.rb)
 - [Migration/UniqueIndexColumnsCount](lib/rubocop/cop/migration/unique_index_columns_count.rb)
+
+## Acknowledgements
+
+This gem was heavily inspired by the following gem:
+
+- [ankane/strong_migrations](https://github.com/ankane/strong_migrations)
