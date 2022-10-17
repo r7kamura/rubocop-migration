@@ -26,4 +26,7 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
   spec.metadata['rubygems_mfa_required'] = 'true'
+
+  spec.add_dependency 'activesupport'
+  spec.add_dependency 'rubocop'
 end
