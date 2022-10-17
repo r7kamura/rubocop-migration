@@ -11,13 +11,18 @@ Install `rubocop-migration` gem:
 gem 'rubocop-migration', require: false
 ```
 
-then require `rubocop-migration` in your .rubocop.yml:
+then require `rubocop-migration` and enable the cops you want to use in your .rubocop.yml:
 
 ```yaml
 # .rubocop.yml
 require:
   - rubocop-migration
+
+Migration/AddCheckConstraint:
+  Enabled: false
 ```
+
+Note that all cops are `Enabled: false` by default.
 
 ## Cops
 
