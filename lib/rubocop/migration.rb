@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "migration/version"
+require_relative 'migration/version'
 
 module Rubocop
   module Migration
