@@ -1,4 +1,4 @@
-# Rubocop::Migration
+# rubocop-migration
 
 RuboCop extension focused on ActiveRecord migration.
 
