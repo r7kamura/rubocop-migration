@@ -1,5 +1,7 @@
 # rubocop-migration
 
+[![test](https://github.com/r7kamura/rubocop-migration/actions/workflows/test.yml/badge.svg)](https://github.com/r7kamura/rubocop-migration/actions/workflows/test.yml)
+
 RuboCop extension focused on ActiveRecord migration.
 
 ## Usage
