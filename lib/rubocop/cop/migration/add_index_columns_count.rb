@@ -23,6 +23,8 @@ module RuboCop
         # @param node [RuboCop::AST::SendNode]
         # @return [void]
         def on_send(node)
+          return if with_unique_option?(node)
+
           column_names_node = column_names_node_from(node)
           return unless column_names_node
 
@@ -59,6 +61,24 @@ module RuboCop
             :index
             $({array | str | sym} ...)
             ...
+          )
+        PATTERN
+
+        # @!method with_unique_option?(node)
+        #   @param node [RuboCop::AST::SendNode]
+        #   @return [Boolean]
+        def_node_matcher :with_unique_option?, <<~PATTERN
+          (send
+            ...
+            (hash
+              <
+                (pair
+                  (sym :unique)
+                  true
+                )
+                ...
+              >
+            )
           )
         PATTERN
 
