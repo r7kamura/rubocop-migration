@@ -46,6 +46,7 @@ module RuboCop
             :add_index
             _
             $({array | str | sym} ...)
+            ...
           )
         PATTERN
 
@@ -57,6 +58,7 @@ module RuboCop
             lvar
             :index
             $({array | str | sym} ...)
+            ...
           )
         PATTERN
 
