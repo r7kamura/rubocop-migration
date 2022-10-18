@@ -25,6 +25,15 @@ Migration/AddForeignKey:
   Include:
     - db/migrate/**/*.rb
 
+Migration/AddIndexColumnsCount:
+  Description: |
+    Keep non-unique index columns count less than a specified number.
+  Enabled: false
+  VersionAdded: '0.22'
+  MaxColumnsCount: 3
+  Include:
+    - db/migrate/**/*.rb
+
 Migration/AddIndexConcurrently:
   Description: |
     Use `algorithm: :concurrently` on adding indexes to existing tables in PostgreSQL.
@@ -129,14 +138,5 @@ Migration/ReservedWordMysql:
   Enabled: false
   Safe: false
   VersionAdded: '0.20'
-  Include:
-    - db/migrate/**/*.rb
-
-Migration/UniqueIndexColumnsCount:
-  Description: |
-    Keep unique index columns count less than a specified number.
-  Enabled: false
-  VersionAdded: '0.22'
-  MaxColumnsCount: 3
   Include:
     - db/migrate/**/*.rb

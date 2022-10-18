@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Migration
-      # Keep unique index columns count less than a specified number.
+      # Keep non-unique index columns count less than a specified number.
       #
       # Adding a non-unique index with more than three columns rarely improves performance.
       # Instead, start an index with columns that narrow down the results the most.
@@ -14,7 +14,7 @@ module RuboCop
       #
       #   # good (`MaxColumnsCount: 3` by default)
       #   add_index :users, %i[a b c]
-      class UniqueIndexColumnsCount < RuboCop::Cop::Base
+      class AddIndexColumnsCount < RuboCop::Cop::Base
         RESTRICT_ON_SEND = %i[
           add_index
           index

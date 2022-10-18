@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Migration::UniqueIndexColumnsCount, :config do
+RSpec.describe RuboCop::Cop::Migration::AddIndexColumnsCount, :config do
   let(:cop_config) do
     { 'MaxColumnsCount' => max_columns_count }
   end
