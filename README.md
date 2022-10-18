@@ -11,9 +11,11 @@ RuboCop extension focused on ActiveRecord migration.
 This gem is not yet published to rubygems.org.
 See [#1](https://github.com/r7kamura/rubocop-migration/issues/1) for more details.
 
+This gem is at least versioned using tags with GitHub Releases, so it may be a good idea to refer to the tags.
+
 ```ruby
 # Gemfile
-gem 'rubocop-migration', require: false, github: 'r7kamura/rubocop-migration', branch: 'main'
+gem 'rubocop-migration', require: false, github: 'r7kamura/rubocop-migration', tag: 'v0.3.1
 ```
 
 then require `rubocop-migration` and enable the cops you want to use in your .rubocop.yml:
