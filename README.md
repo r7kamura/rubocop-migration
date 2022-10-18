@@ -9,7 +9,7 @@ RuboCop extension focused on ActiveRecord migration.
 ~~Install `rubocop-migration` gem:~~
 
 This gem is not yet published to rubygems.org.
-See [r7kamura/sevencop#95](https://github.com/r7kamura/rubocop-migration/issues/1) for more details.
+See [#1](https://github.com/r7kamura/rubocop-migration/issues/1) for more details.
 
 ```ruby
 # Gemfile
