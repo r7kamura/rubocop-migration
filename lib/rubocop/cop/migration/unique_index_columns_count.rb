@@ -43,9 +43,9 @@ module RuboCop
         def_node_matcher :column_names_node_from_add_index, <<~PATTERN
           (send
             nil?
+            :add_index
             _
-            _
-            $({array | sym} ...)
+            $({array | str | sym} ...)
           )
         PATTERN
 
@@ -54,9 +54,9 @@ module RuboCop
         #   @return [RuboCop::AST::Node, nil]
         def_node_matcher :column_names_node_from_index, <<~PATTERN
           (send
-            (lvar ...)
-            _
-            $({array | sym} ...)
+            lvar
+            :index
+            $({array | str | sym} ...)
           )
         PATTERN
 
