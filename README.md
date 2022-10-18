@@ -38,6 +38,7 @@ Please read the comments of the respective cop classes for more information.
 - [Migration/AddForeignKey](lib/rubocop/cop/migration/add_foreign_key.rb)
 - [Migration/AddIndexColumnsCount](lib/rubocop/cop/migration/unique_index_columns_count.rb)
 - [Migration/AddIndexConcurrently](lib/rubocop/cop/migration/add_index_concurrently.rb)
+- [Migration/AddIndexDuplicate](lib/rubocop/cop/migration/add_index_duplicate.rb)
 - [Migration/BatchInBatches](lib/rubocop/cop/migration/batch_in_batches.rb)
 - [Migration/BatchInTransaction](lib/rubocop/cop/migration/batch_in_transaction.rb)
 - [Migration/BatchWithThrottling](lib/rubocop/cop/migration/batch_with_throttling.rb)
