@@ -13,7 +13,7 @@ See [r7kamura/sevencop#95](https://github.com/r7kamura/rubocop-migration/issues/
 
 ```ruby
 # Gemfile
-gem 'rubocop-migration', require: false
+gem 'rubocop-migration', require: false, github: 'r7kamura/rubocop-migration', branch: 'main'
 ```
 
 then require `rubocop-migration` and enable the cops you want to use in your .rubocop.yml:
