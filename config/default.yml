@@ -43,6 +43,15 @@ Migration/AddIndexConcurrently:
   Include:
     - db/migrate/**/*.rb
 
+Migration/AddIndexDuplicate:
+  Description: |
+    Avoid adding duplicate indexes.
+  Enabled: false
+  Safe: false
+  VersionAdded: '0.22'
+  Include:
+    - db/migrate/**/*.rb
+
 Migration/BatchInBatches:
   Description: |
     Use `in_batches` in batch processing.
