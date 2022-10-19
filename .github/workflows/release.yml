@@ -7,22 +7,6 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-      - id: tag-new-version
-        uses: salsify/action-detect-and-tag-new-version@v2
-        with:
-          version-command: cat lib/rubocop/migration/version.rb | grep VERSION | cut -d "'" -f 2
-      - if: ${{ steps.tag-new-version.outputs.tag }}
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-          ruby-version: 3.1
-      - if: ${{ steps.tag-new-version.outputs.tag }}
-        uses: softprops/action-gh-release@v1
-        with:
-          generate_release_notes: true
-          tag_name: ${{ steps.tag-new-version.outputs.tag }}
+    uses: r7kamura/workflows/.github/workflows/gem-release.yml@main
+    secrets:
+      rubygems-org-api-key: ${{ secrets.RUBYGEMS_ORG_API_KEY }}
