@@ -168,18 +168,6 @@ module RuboCop
           )
         end
 
-        # @return [#parse]
-        def parser
-          parser_class.new(::RuboCop::AST::Builder.new)
-        end
-
-        # @return [Class]
-        def parser_class
-          ::Parser.const_get(
-            "Ruby#{target_ruby_version.to_s.delete('.')}"
-          )
-        end
-
         # @param plural [String]
         # @return [String]
         def singularize(plural)
