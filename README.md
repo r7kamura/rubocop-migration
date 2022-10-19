@@ -53,8 +53,6 @@ Please read the comments of the respective cop classes for more information.
 
 ## Acknowledgements
 
-This gem was heavily inspired by the following gem:
-
-- [ankane/strong_migrations](https://github.com/ankane/strong_migrations)
+This gem was heavily inspired by [ankane/strong_migrations](https://github.com/ankane/strong_migrations).
 
 The gem `rubocop-migration` was originally developed at [wealthsimple/rubocop-migration](https://github.com/wealthsimple/rubocop-migration), and later the gem name was transferred to this repository.
