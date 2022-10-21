@@ -53,3 +53,5 @@ Please read the comments of the respective cop classes for more information.
 This gem was heavily inspired by [ankane/strong_migrations](https://github.com/ankane/strong_migrations).
 
 The gem `rubocop-migration` was originally developed at [wealthsimple/rubocop-migration](https://github.com/wealthsimple/rubocop-migration), and later the gem name was transferred to this repository.
+
+Some cops were originally created at [r7kamura/sevencop](https://github.com/r7kamura/sevencop) then moved to this repository.
