@@ -40,12 +40,13 @@ module RuboCop
 
         RESTRICT_ON_SEND = %i[
           change_column_null
+          change_null
         ].freeze
 
         # @param node [RuboCop::AST::SendNode]
         # @return [void]
         def on_send(node)
-          return if in_second_migration?(node)
+          return if called_with_validate_constraint?(node)
 
           add_offense(node) do |corrector|
             autocorrect(corrector, node)
@@ -53,26 +54,6 @@ module RuboCop
         end
 
         private
-
-        # @!method parse_table_name_and_column_name(node)
-        #   @param node [RuboCop::AST::SendNode]
-        #   @return [Array<Symbol>, nil]
-        def_node_matcher :parse_table_name_and_column_name, <<~PATTERN
-          (send
-            nil?
-            _
-            ({str sym} $_)
-            ({str sym} $_)
-            ...
-          )
-        PATTERN
-
-        # @!method remove_check_constraint?(node)
-        #   @param node [RuboCop::AST::SendNode]
-        #   @return [Boolean]
-        def_node_matcher :remove_check_constraint?, <<~PATTERN
-          (send nil? :remove_check_constraint ...)
-        PATTERN
 
         # @!method validate_constraint?(node)
         #   @param node [RuboCop::AST::SendNode]
@@ -88,39 +69,138 @@ module RuboCop
           corrector,
           node
         )
-          table_name, column_name = parse_table_name_and_column_name(node)
+          case node.method_name
+          when :change_column_null
+            autocorrect_change_column_null(corrector, node)
+          when :change_null
+            autocorrect_change_null(corrector, node)
+          end
+        end
+
+        # @param corrector [RuboCop::Cop::Corrector]
+        # @param node [RuboCop::AST::SendNode]
+        # @return [void]
+        def autocorrect_change_column_null(
+          corrector,
+          node
+        )
           corrector.replace(
             node,
-            format(
-              "add_check_constraint :%<table>s, '%<column>s IS NOT NULL', name: '%<constraint>s', validate: false",
-              column: column_name,
-              constraint: "#{table_name}_#{column_name}_is_not_null",
-              table: table_name
+            format_add_check_constraint(
+              column_name: find_column_name_from_change_column_null(node),
+              table_name: find_table_name_from_change_column_null(node)
+            )
+          )
+        end
+
+        # @param corrector [RuboCop::Cop::Corrector]
+        # @param node [RuboCop::AST::SendNode]
+        # @return [void]
+        def autocorrect_change_null(
+          corrector,
+          node
+        )
+          corrector.replace(
+            node.location.selector.with(
+              end_pos: node.location.expression.end_pos
+            ),
+            format_check_constraint(
+              column_name: find_column_name_from_change_null(node),
+              table_name: find_table_name_from_change_null(node)
             )
           )
         end
 
         # @param node [RuboCop::AST::SendNode]
         # @return [Boolean]
-        def called_after_validate_constraint?(node)
-          node.left_siblings.any? do |sibling|
+        def called_with_validate_constraint?(node)
+          case node.method_name
+          when :change_column_null
+            node
+          when :change_null
+            find_ancestor_change_table(node)
+          end.left_siblings.any? do |sibling|
             validate_constraint?(sibling)
           end
         end
 
         # @param node [RuboCop::AST::SendNode]
-        # @return [Boolean]
-        def called_before_remove_check_constraint?(node)
-          node.right_siblings.any? do |sibling|
-            remove_check_constraint?(sibling)
+        # @return [RuboCop::AST::BlockNode]
+        def find_ancestor_change_table(node)
+          node.each_ancestor(:block).find do |ancestor|
+            ancestor.method?(:change_table)
           end
         end
 
         # @param node [RuboCop::AST::SendNode]
-        # @return [Boolean]
-        def in_second_migration?(node)
-          called_after_validate_constraint?(node) ||
-            called_before_remove_check_constraint?(node)
+        # @return [String]
+        def find_column_name_from_change_column_null(node)
+          node.arguments[1].value.to_s
+        end
+
+        # @param node [RuboCop::AST::SendNode]
+        # @return [String]
+        def find_column_name_from_change_null(node)
+          node.arguments[0].value.to_s
+        end
+
+        # @parm node [RuboCop::AST::SendNode]
+        # @return [String]
+        def find_table_name_from_change_column_null(node)
+          node.arguments[0].value.to_s
+        end
+
+        # @param node [RuboCop::AST::SendNode]
+        # @return [String]
+        def find_table_name_from_change_null(node)
+          find_ancestor_change_table(node).send_node.arguments[0].value.to_s
+        end
+
+        # @param column_name [String]
+        # @param table_name [String]
+        # @return [String]
+        def format_add_check_constraint(
+          column_name:,
+          table_name:
+        )
+          format(
+            'add_check_constraint :%<table_name>s, %<arguments>s',
+            arguments: format_check_constraint_arguments(
+              column_name: column_name,
+              table_name: table_name
+            ),
+            table_name: table_name
+          )
+        end
+
+        # @param column_name [String]
+        # @param table_name [String]
+        # @return [String]
+        def format_check_constraint(
+          column_name:,
+          table_name:
+        )
+          format(
+            'check_constraint %<arguments>s',
+            arguments: format_check_constraint_arguments(
+              column_name: column_name,
+              table_name: table_name
+            )
+          )
+        end
+
+        # @param coumn_name [String]
+        # @param table_name [String]
+        # @return [String]
+        def format_check_constraint_arguments(
+          column_name:,
+          table_name:
+        )
+          format(
+            "'%<column_name>s IS NOT NULL', name: '%<constraint_name>s', validate: false",
+            column_name: column_name,
+            constraint_name: "#{table_name}_#{column_name}_is_not_null"
+          )
         end
       end
     end
