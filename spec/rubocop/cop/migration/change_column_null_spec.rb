@@ -5,7 +5,7 @@ RSpec.describe RuboCop::Cop::Migration::ChangeColumnNull, :config do
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY)
         def change
-          validate_constraint :users, :name, name: 'users_name_is_not_null'
+          validate_constraint :users, 'users_name_is_not_null'
           change_column_null :users, :name, false
           remove_check_constraint :users, name: 'users_name_is_not_null'
         end
