@@ -21,7 +21,7 @@ require:
   - rubocop-migration
 
 Migration/AddCheckConstraint:
-  Enabled: false
+  Enabled: true
 ```
 
 Note that all cops are `Enabled: false` by default.
