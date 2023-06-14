@@ -116,4 +116,30 @@ RSpec.describe RuboCop::Cop::Migration::AddIndexConcurrently, :config do
       RUBY
     end
   end
+
+  context 'when `add_index` is used without `:algorithm` option twice' do
+    it 'registers an offense' do
+      expect_offense(<<~TEXT)
+        class AddIndexToUsersName < ActiveRecord::Migration[7.0]
+          def change
+            add_index :users, :name1
+            ^^^^^^^^^^^^^^^^^^^^^^^^ Use `algorithm: :concurrently` on adding indexes to existing tables in PostgreSQL.
+            add_index :users, :name2
+            ^^^^^^^^^^^^^^^^^^^^^^^^ Use `algorithm: :concurrently` on adding indexes to existing tables in PostgreSQL.
+          end
+        end
+      TEXT
+
+      expect_correction(<<~RUBY)
+        class AddIndexToUsersName < ActiveRecord::Migration[7.0]
+          disable_ddl_transaction!
+
+          def change
+            add_index :users, :name1, algorithm: :concurrently
+            add_index :users, :name2, algorithm: :concurrently
+          end
+        end
+      RUBY
+    end
+  end
 end

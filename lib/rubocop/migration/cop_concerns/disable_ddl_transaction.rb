@@ -24,6 +24,15 @@ module RuboCop
 
         private
 
+        # @param node [RuboCop::AST::SendNode]
+        # @return [Array<RuboCop::AST::SendNode>]
+        def disable_ddl_transactions_from(node)
+          node.each_ancestor(:def).first&.left_siblings&.select do |sibling|
+            sibling.is_a?(::RuboCop::AST::SendNode) &&
+              disable_ddl_transaction?(sibling)
+          end || []
+        end
+
         # @param corrector [RuboCop::Cop::Corrector]
         # @param node [RuboCop::AST::SendNode]
         # @return [void]
@@ -40,10 +49,7 @@ module RuboCop
         # @param node [RuboCop::AST::SendNode]
         # @return [Boolean]
         def within_disable_ddl_transaction?(node)
-          node.each_ancestor(:def).first&.left_siblings&.any? do |sibling|
-            sibling.is_a?(::RuboCop::AST::SendNode) &&
-              disable_ddl_transaction?(sibling)
-          end
+          !disable_ddl_transactions_from(node).empty?
         end
       end
     end
