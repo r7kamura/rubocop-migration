@@ -135,15 +135,18 @@ module RuboCop
         # @param node [RuboCop::AST::SendNode]
         # @return [String, nil]
         def find_table_name_from(node)
-          node.arguments[0].value&.to_s
+          table_name_node = node.arguments[0]
+          table_name_node.value&.to_s if table_name_node.respond_to?(:value)
         end
 
+        # @note This method returns `true` if the table name cannot be determined.
         # @param node [RuboCop::AST::SendNode]
         # @return [Boolean]
         def ignored?(node)
-          find_ignored_column_names_from(
-            find_table_name_from(node)
-          ).include?(
+          table_name = find_table_name_from(node)
+          return true unless table_name
+
+          find_ignored_column_names_from(table_name).include?(
             find_column_name_from(node)
           )
         end

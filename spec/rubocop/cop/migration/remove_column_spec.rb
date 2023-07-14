@@ -96,4 +96,16 @@ RSpec.describe RuboCop::Cop::Migration::RemoveColumn, :config do
       RUBY
     end
   end
+
+  context 'when table name is non literal node' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class RemoveSomeColumn < ActiveRecord::Migration[7.0]
+          def change
+            remove_column table_name, :some_column
+          end
+        end
+      RUBY
+    end
+  end
 end
