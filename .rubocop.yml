@@ -48,11 +48,11 @@ Sevencop/MethodDefinitionKeywordArgumentOrdered:
 Sevencop/MethodDefinitionOrdered:
   Enabled: true
 
-Sevencop/RequireOrdered:
-  Enabled: true
-
 Style/Documentation:
   Enabled: false
 
 Style/MultilineBlockChain:
   Enabled: false
+
+Style/RequireOrder:
+  Enabled: true
