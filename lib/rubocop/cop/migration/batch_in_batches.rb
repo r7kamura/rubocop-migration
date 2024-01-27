@@ -26,7 +26,7 @@ module RuboCop
       #     disable_ddl_transaction!
       #
       #     def up
-      #       User.within_in_batches do |relation|
+      #       User.in_batches do |relation|
       #         relation.update_all(some_column: 'some value')
       #       end
       #     end
