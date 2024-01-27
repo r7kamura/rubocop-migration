@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Migration::BatchInBatches, :config do
-  context 'when `update_all` is used within `in_batches`' do
+  context 'when `update_all` is used with block `in_batches`' do
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
@@ -15,7 +15,19 @@ RSpec.describe RuboCop::Cop::Migration::BatchInBatches, :config do
     end
   end
 
-  context 'when `update_all` is used not within `in_batches`' do
+  context 'when `update_all` is used with inline `in_batches`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
+          def change
+            User.in_batches.update_all(some_column: 'some value')
+          end
+        end
+      RUBY
+    end
+  end
+
+  context 'when `update_all` is used not with block `in_batches`' do
     it 'registers an offense' do
       expect_offense(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
