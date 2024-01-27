@@ -26,6 +26,15 @@ module RuboCop
       #     disable_ddl_transaction!
       #
       #     def up
+      #       User.in_batches.update_all(some_column: 'some value')
+      #     end
+      #   end
+      #
+      #   # good
+      #   class BackfillSomeColumnToUsers < ActiveRecord::Migration[7.0]
+      #     disable_ddl_transaction!
+      #
+      #     def up
       #       User.in_batches do |relation|
       #         relation.update_all(some_column: 'some value')
       #       end
@@ -75,9 +84,15 @@ module RuboCop
           )
         end
 
-        # @param node [RuboCop::AST::Node]
+        # @param node [RuboCop::AST::SendNode]
         # @return [Boolean]
-        def within_in_batches?(node)
+        def in_batches?(node)
+          in_block_batches?(node) || in_inline_batches?(node)
+        end
+
+        # @param node [RuboCop::AST::SendNode]
+        # @return [Boolean]
+        def in_block_batches?(node)
           node.each_ancestor(:block).any? do |ancestor|
             ancestor.method?(:in_batches)
           end
@@ -85,9 +100,15 @@ module RuboCop
 
         # @param node [RuboCop::AST::SendNode]
         # @return [Boolean]
+        def in_inline_batches?(node)
+          node.receiver.is_a?(::RuboCop::AST::SendNode) &&
+            node.receiver.method?(:in_batches)
+        end
+
+        # @param node [RuboCop::AST::SendNode]
+        # @return [Boolean]
         def wrong?(node)
-          batch_processing?(node) &&
-            !within_in_batches?(node)
+          batch_processing?(node) && !in_batches?(node)
         end
       end
     end
