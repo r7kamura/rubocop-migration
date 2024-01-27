@@ -71,17 +71,7 @@ module RuboCop
           corrector,
           node
         )
-          range = node.location.selector.with(
-            end_pos: node.source_range.end_pos
-          )
-          corrector.replace(
-            range,
-            <<~TEXT.chomp
-              in_batches do |relation|
-                relation.#{range.source}
-              end
-            TEXT
-          )
+          corrector.insert_before(node.location.selector, 'in_batches.')
         end
 
         # @param node [RuboCop::AST::SendNode]

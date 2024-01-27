@@ -41,9 +41,7 @@ RSpec.describe RuboCop::Cop::Migration::BatchInBatches, :config do
       expect_correction(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           def change
-            User.in_batches do |relation|
-          relation.update_all(some_column: 'some value')
-        end
+            User.in_batches.update_all(some_column: 'some value')
           end
         end
       RUBY
@@ -64,9 +62,7 @@ RSpec.describe RuboCop::Cop::Migration::BatchInBatches, :config do
       expect_correction(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           def change
-            User.in_batches do |relation|
-          relation.delete_all
-        end
+            User.in_batches.delete_all
           end
         end
       RUBY
