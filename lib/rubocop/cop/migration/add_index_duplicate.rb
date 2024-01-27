@@ -108,7 +108,7 @@ module RuboCop
           indexed_columns_node = indexed_columns_node_from(node)
           case indexed_columns_node&.type
           when :array
-            indexed_columns_node.children.map(&:value).map(&:to_s)
+            indexed_columns_node.children.map { |child| child.value.to_s }
           when :str, :sym
             [indexed_columns_node.value.to_s]
           end
