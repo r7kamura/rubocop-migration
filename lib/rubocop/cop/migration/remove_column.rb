@@ -135,7 +135,7 @@ module RuboCop
         # @param node [RuboCop::AST::SendNode]
         # @return [String, nil]
         def find_table_name_from(node)
-          table_name_node = node.arguments[0]
+          table_name_node = node.first_argument
           table_name_node.value&.to_s if table_name_node.respond_to?(:value)
         end
 

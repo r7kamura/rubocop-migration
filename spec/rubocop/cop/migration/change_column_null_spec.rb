@@ -29,12 +29,12 @@ RSpec.describe RuboCop::Cop::Migration::ChangeColumnNull, :config do
 
   context 'when `change_column_null` is simply called' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         def change
           change_column_null :users, :name, false
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid simply setting `NOT NULL` constraint on an existing column in PostgreSQL.
         end
-      TEXT
+      RUBY
 
       expect_correction(<<~RUBY)
         def change
@@ -46,14 +46,14 @@ RSpec.describe RuboCop::Cop::Migration::ChangeColumnNull, :config do
 
   context 'when `t.change_null` is simply called' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         def change
           change_table :users do |t|
             t.change_null :name, false
             ^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid simply setting `NOT NULL` constraint on an existing column in PostgreSQL.
           end
         end
-      TEXT
+      RUBY
 
       expect_correction(<<~RUBY)
         def change

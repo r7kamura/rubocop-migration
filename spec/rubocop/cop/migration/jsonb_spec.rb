@@ -11,12 +11,12 @@ RSpec.describe RuboCop::Cop::Migration::Jsonb, :config do
 
   context 'when json is used on `t.json`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         create_table :users do |t|
           t.json :properties
             ^^^^ Prefer `jsonb` to `json`.
         end
-      TEXT
+      RUBY
 
       expect_correction(<<~RUBY)
         create_table :users do |t|
@@ -28,12 +28,12 @@ RSpec.describe RuboCop::Cop::Migration::Jsonb, :config do
 
   context 'when json is used on `t.change`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         change :users do |t|
           t.change :properties, :json
                                  ^^^^ Prefer `jsonb` to `json`.
         end
-      TEXT
+      RUBY
 
       expect_correction(<<~RUBY)
         change :users do |t|
@@ -45,10 +45,10 @@ RSpec.describe RuboCop::Cop::Migration::Jsonb, :config do
 
   context 'when json is used on `add_column`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         add_column :users, :properties, :json
                                          ^^^^ Prefer `jsonb` to `json`.
-      TEXT
+      RUBY
 
       expect_correction(<<~RUBY)
         add_column :users, :properties, :jsonb
@@ -58,10 +58,10 @@ RSpec.describe RuboCop::Cop::Migration::Jsonb, :config do
 
   context 'when json is used on `change_column`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         change_column :users, :properties, :json
                                             ^^^^ Prefer `jsonb` to `json`.
-      TEXT
+      RUBY
 
       expect_correction(<<~RUBY)
         change_column :users, :properties, :jsonb

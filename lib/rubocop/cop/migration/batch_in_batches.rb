@@ -63,7 +63,7 @@ module RuboCop
           node
         )
           range = node.location.selector.with(
-            end_pos: node.location.expression.end_pos
+            end_pos: node.source_range.end_pos
           )
           corrector.replace(
             range,

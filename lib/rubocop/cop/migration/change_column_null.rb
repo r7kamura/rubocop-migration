@@ -102,7 +102,7 @@ module RuboCop
         )
           corrector.replace(
             node.location.selector.with(
-              end_pos: node.location.expression.end_pos
+              end_pos: node.source_range.end_pos
             ),
             format_check_constraint(
               column_name: find_column_name_from_change_null(node),
@@ -141,19 +141,19 @@ module RuboCop
         # @param node [RuboCop::AST::SendNode]
         # @return [String]
         def find_column_name_from_change_null(node)
-          node.arguments[0].value.to_s
+          node.first_argument.value.to_s
         end
 
         # @parm node [RuboCop::AST::SendNode]
         # @return [String]
         def find_table_name_from_change_column_null(node)
-          node.arguments[0].value.to_s
+          node.first_argument.value.to_s
         end
 
         # @param node [RuboCop::AST::SendNode]
         # @return [String]
         def find_table_name_from_change_null(node)
-          find_ancestor_change_table(node).send_node.arguments[0].value.to_s
+          find_ancestor_change_table(node).send_node.first_argument.value.to_s
         end
 
         # @param column_name [String]

@@ -29,10 +29,10 @@ RSpec.describe RuboCop::Cop::Migration::AddColumnWithDefaultValue, :config do
 
   context 'when `add_column` is used with non-nil `:default` option' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         add_column :users, :some_column, :string, default: 'some value'
                                                   ^^^^^^^^^^^^^^^^^^^^^ Add the column without a default value then change the default.
-      TEXT
+      RUBY
 
       expect_correction(<<~RUBY)
         add_column :users, :some_column, :string
@@ -43,12 +43,12 @@ RSpec.describe RuboCop::Cop::Migration::AddColumnWithDefaultValue, :config do
 
   context 'when `t.string` is used with non-nil `:default` option in `change_table`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         change_table :users do |t|
           t.string :some_column, default: 'some value'
                                  ^^^^^^^^^^^^^^^^^^^^^ Add the column without a default value then change the default.
         end
-      TEXT
+      RUBY
 
       expect_correction(<<~RUBY)
         change_table :users do |t|

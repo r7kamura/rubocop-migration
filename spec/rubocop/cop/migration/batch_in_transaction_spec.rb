@@ -17,14 +17,14 @@ RSpec.describe RuboCop::Cop::Migration::BatchInTransaction, :config do
 
   context 'when `update_all` is used without `disable_ddl_transaction!`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           def change
             User.update_all(some_column: 'some value')
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Disable transaction in batch processing.
           end
         end
-      TEXT
+      RUBY
 
       expect_correction(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
@@ -40,14 +40,14 @@ RSpec.describe RuboCop::Cop::Migration::BatchInTransaction, :config do
 
   context 'when `delete_all` is used without `disable_ddl_transaction!`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           def change
             User.delete_all
             ^^^^^^^^^^^^^^^ Disable transaction in batch processing.
           end
         end
-      TEXT
+      RUBY
 
       expect_correction(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]

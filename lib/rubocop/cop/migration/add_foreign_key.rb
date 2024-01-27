@@ -144,7 +144,7 @@ module RuboCop
             corrector.remove(
               range_with_surrounding_comma(
                 range_with_surrounding_space(
-                  option_foreign_key_true_node_from_add_reference(node).location.expression,
+                  option_foreign_key_true_node_from_add_reference(node).source_range,
                   side: :left
                 ),
                 :left

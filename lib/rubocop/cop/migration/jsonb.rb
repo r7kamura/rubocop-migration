@@ -111,8 +111,8 @@ module RuboCop
           when :send
             node.location.selector
           when :sym
-            node.location.expression.with(
-              begin_pos: node.location.expression.begin_pos + 1
+            node.source_range.with(
+              begin_pos: node.source_range.begin_pos + 1
             )
           end
         end

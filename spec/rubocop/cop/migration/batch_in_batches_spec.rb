@@ -17,16 +17,16 @@ RSpec.describe RuboCop::Cop::Migration::BatchInBatches, :config do
 
   context 'when `update_all` is used not within `in_batches`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           def change
             User.update_all(some_column: 'some value')
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `in_batches` in batch processing.
           end
         end
-      TEXT
+      RUBY
 
-      expect_correction(<<~TEXT)
+      expect_correction(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           def change
             User.in_batches do |relation|
@@ -34,22 +34,22 @@ RSpec.describe RuboCop::Cop::Migration::BatchInBatches, :config do
         end
           end
         end
-      TEXT
+      RUBY
     end
   end
 
   context 'when `delete_all` is used without `sleep`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           def change
             User.delete_all
             ^^^^^^^^^^^^^^^ Use `in_batches` in batch processing.
           end
         end
-      TEXT
+      RUBY
 
-      expect_correction(<<~TEXT)
+      expect_correction(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           def change
             User.in_batches do |relation|
@@ -57,7 +57,7 @@ RSpec.describe RuboCop::Cop::Migration::BatchInBatches, :config do
         end
           end
         end
-      TEXT
+      RUBY
     end
   end
 end

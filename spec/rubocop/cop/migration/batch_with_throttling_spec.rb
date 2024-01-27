@@ -34,7 +34,7 @@ RSpec.describe RuboCop::Cop::Migration::BatchWithThrottling, :config do
 
   context 'when `update_all` is used without `sleep`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           disable_ddl_transaction!
 
@@ -45,9 +45,9 @@ RSpec.describe RuboCop::Cop::Migration::BatchWithThrottling, :config do
             end
           end
         end
-      TEXT
+      RUBY
 
-      expect_correction(<<~TEXT)
+      expect_correction(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           disable_ddl_transaction!
 
@@ -58,13 +58,13 @@ RSpec.describe RuboCop::Cop::Migration::BatchWithThrottling, :config do
             end
           end
         end
-      TEXT
+      RUBY
     end
   end
 
   context 'when `delete_all` is used without `sleep`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           disable_ddl_transaction!
 
@@ -75,9 +75,9 @@ RSpec.describe RuboCop::Cop::Migration::BatchWithThrottling, :config do
             end
           end
         end
-      TEXT
+      RUBY
 
-      expect_correction(<<~TEXT)
+      expect_correction(<<~RUBY)
         class BackfillUsersSomeColumn < ActiveRecord::Migration[7.0]
           disable_ddl_transaction!
 
@@ -88,7 +88,7 @@ RSpec.describe RuboCop::Cop::Migration::BatchWithThrottling, :config do
             end
           end
         end
-      TEXT
+      RUBY
     end
   end
 end

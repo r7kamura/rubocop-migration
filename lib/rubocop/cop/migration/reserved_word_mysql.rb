@@ -165,7 +165,7 @@ module RuboCop
           when :rename_column
             [node.arguments[2]]
           when *COLUMN_TYPE_METHOD_NAMES
-            [node.arguments[0]]
+            [node.first_argument]
           else
             []
           end
@@ -203,7 +203,7 @@ module RuboCop
           when :create_join_table
             [table_name_option_from(node)].compact
           when :create_table
-            [node.arguments[0]]
+            [node.first_argument]
           when :rename_table
             [node.arguments[1]]
           else

@@ -19,10 +19,10 @@ RSpec.describe RuboCop::Cop::Migration::CreateTableForce, :config do
 
   context 'when `create_table` is used with `force: true`' do
     it 'registers an offense' do
-      expect_offense(<<~TEXT)
+      expect_offense(<<~RUBY)
         create_table :users, force: true
                              ^^^^^^^^^^^ Create tables without `force: true` option.
-      TEXT
+      RUBY
 
       expect_correction(<<~RUBY)
         create_table :users

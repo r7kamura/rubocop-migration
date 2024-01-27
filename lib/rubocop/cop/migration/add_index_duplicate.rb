@@ -121,7 +121,7 @@ module RuboCop
           when :add_index
             node.arguments[1]
           when :index
-            node.arguments[0]
+            node.first_argument
           end
         end
 
