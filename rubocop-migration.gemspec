@@ -28,5 +28,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activesupport'
   spec.add_dependency 'rubocop', '>= 1.34'
-  spec.add_dependency 'rubocop-rails'
+  spec.add_dependency 'rubocop-rails', '>= 2.24'
 end

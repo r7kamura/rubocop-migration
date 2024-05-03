@@ -135,9 +135,14 @@ module RuboCop
           haystack.join(',').start_with?(needle.join(','))
         end
 
+        # @return [Symbol]
+        def parser
+          respond_to?(:parser_engine) ? parser_engine : :parser_whitequark
+        end
+
         # @return [RuboCop::Rails::SchemaLoader::Schema, nil]
         def schema
-          @schema ||= ::RuboCop::Rails::SchemaLoader.load(target_ruby_version)
+          @schema ||= ::RuboCop::Rails::SchemaLoader.load(target_ruby_version, parser)
         end
 
         # @param node [RuboCop::AST::SendNode]
