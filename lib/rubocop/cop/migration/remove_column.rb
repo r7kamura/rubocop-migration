@@ -10,6 +10,9 @@ module RuboCop
       #
       # Active Record caches database columns at runtime, so if you drop a column, it can cause exceptions until your app reboots.
       #
+      # Note that since this cop goes to read arbitrary model files,
+      # false negatives occur in situations where RuboCop's cache is being used.
+      #
       # @safety
       #   The logic to check if it is included in `ignored_columns` may fail.
       #
