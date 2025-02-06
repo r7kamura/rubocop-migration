@@ -11,7 +11,6 @@ algorithm
 all
 alter
 always
-analyse
 analyze
 and
 any
@@ -23,6 +22,7 @@ asensitive
 at
 attribute
 authentication
+auto
 auto_increment
 autoextend_size
 avg
@@ -30,6 +30,7 @@ avg_row_length
 backup
 before
 begin
+bernoulli
 between
 bigint
 binary
@@ -42,6 +43,7 @@ boolean
 both
 btree
 buckets
+bulk
 by
 byte
 cache
@@ -128,7 +130,6 @@ delay_key_write
 delayed
 delete
 dense_rank
-des_key_file
 desc
 describe
 description
@@ -211,6 +212,7 @@ full
 fulltext
 function
 general
+generate
 generated
 geomcollection
 geometry
@@ -227,6 +229,7 @@ group_replication
 grouping
 groups
 gtid_only
+gtids
 handler
 hash
 having
@@ -267,6 +270,7 @@ int3
 int4
 int8
 integer
+intersect
 interval
 into
 invisible
@@ -314,6 +318,7 @@ localtimestamp
 lock
 locked
 locks
+log
 logfile
 logs
 long
@@ -321,6 +326,7 @@ longblob
 longtext
 loop
 low_priority
+manual
 master
 master_auto_position
 master_bind
@@ -335,7 +341,6 @@ master_password
 master_port
 master_public_key_path
 master_retry_count
-master_server_id
 master_ssl
 master_ssl_ca
 master_ssl_capath
@@ -435,6 +440,8 @@ over
 owner
 pack_keys
 page
+parallel
+parse_tree
 parser
 partial
 partition
@@ -469,6 +476,7 @@ profile
 profiles
 proxy
 purge
+qualify
 quarter
 query
 quick
@@ -484,7 +492,6 @@ rebuild
 recover
 recursive
 redo_buffer_size
-redofile
 redundant
 reference
 references
@@ -497,7 +504,6 @@ relay_thread
 relaylog
 release
 reload
-remote
 remove
 rename
 reorganize
@@ -546,6 +552,7 @@ row_format
 row_number
 rows
 rtree
+s3
 savepoint
 schedule
 schema
@@ -617,7 +624,6 @@ sql_after_mts_gaps
 sql_before_gtids
 sql_big_result
 sql_buffer_result
-sql_cache
 sql_calc_found_rows
 sql_no_cache
 sql_small_result
@@ -662,6 +668,7 @@ table
 table_checksum
 table_name
 tables
+tablesample
 tablespace
 temporary
 temptable
@@ -705,6 +712,7 @@ unsigned
 until
 update
 upgrade
+url
 usage
 use
 use_frm
