@@ -19,7 +19,7 @@ module RuboCop
 
         MSG = 'Avoid using MySQL reserved words as identifiers.'
 
-        # Obtained from https://dev.mysql.com/doc/refman/8.0/en/keywords.html.
+        # Obtained from https://dev.mysql.com/doc/refman/8.4/en/keywords.html.
         PATH_TO_RESERVED_WORDS_FILE = File.expand_path(
           '../../../../data/reserved_words_mysql.txt',
           __dir__
