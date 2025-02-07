@@ -9,7 +9,7 @@ module RuboCop
       # Avoid adding duplicate indexes.
       #
       # @safety
-      #   This cop tries to find existing indexes from db/schema.rb, but it cannnot be found.
+      #   This cop tries to find existing indexes from db/schema.rb, but it cannot be found.
       #
       # @example
       #   # bad

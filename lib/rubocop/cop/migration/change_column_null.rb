@@ -144,7 +144,7 @@ module RuboCop
           node.first_argument.value.to_s
         end
 
-        # @parm node [RuboCop::AST::SendNode]
+        # @param node [RuboCop::AST::SendNode]
         # @return [String]
         def find_table_name_from_change_column_null(node)
           node.first_argument.value.to_s

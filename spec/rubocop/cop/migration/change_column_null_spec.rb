@@ -13,7 +13,7 @@ RSpec.describe RuboCop::Cop::Migration::ChangeColumnNull, :config do
     end
   end
 
-  context 'when `t.change_null` is called in 2st migration step' do
+  context 'when `t.change_null` is called in 2nd migration step' do
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY)
         def change
