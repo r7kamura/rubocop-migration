@@ -56,6 +56,7 @@ module RuboCop
             )
           end
         end
+        alias on_csend on_send
 
         private
 

@@ -39,6 +39,7 @@ module RuboCop
             corrector.replace(json_range, 'jsonb')
           end
         end
+        alias on_csend on_send
 
         private
 

@@ -36,6 +36,7 @@ module RuboCop
             message: "Keep unique index columns count less than #{max_columns_count}."
           )
         end
+        alias on_csend on_send
 
         private
 
