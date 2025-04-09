@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubocop-migration (0.6.0)
+    rubocop-migration (0.7.0)
       activesupport
       lint_roller (>= 1.1)
       rubocop (>= 1.72.1)
