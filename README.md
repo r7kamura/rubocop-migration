@@ -2,7 +2,7 @@
 
 [![ci](https://github.com/r7kamura/rubocop-migration/actions/workflows/ci.yml/badge.svg)](https://github.com/r7kamura/rubocop-migration/actions/workflows/ci.yml)
 
-RuboCop extension focused on ActiveRecord migration.
+RuboCop plugin for ActiveRecord migration.
 
 ## Usage
 
@@ -13,11 +13,11 @@ Install `rubocop-migration` gem:
 gem 'rubocop-migration', require: false
 ```
 
-then require `rubocop-migration` and enable the cops you want to use in your .rubocop.yml:
+then add `rubocop-migration` to plugins section:
 
 ```yaml
 # .rubocop.yml
-require:
+plugins:
   - rubocop-migration
 
 Migration/AddCheckConstraint:

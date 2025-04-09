@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'migration/cop_concerns'
-require_relative 'migration/rubocop_extension'
+require_relative 'migration/plugin'
 require_relative 'migration/version'
 
 require_relative 'cop/migration/add_check_constraint'
