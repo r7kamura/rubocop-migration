@@ -43,6 +43,7 @@ module RuboCop
             autocorrect(corrector, option_node)
           end
         end
+        alias on_csend on_send
 
         private
 
