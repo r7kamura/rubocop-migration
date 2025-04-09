@@ -4,7 +4,7 @@ require_relative 'lib/rubocop/migration/version'
 
 Gem::Specification.new do |spec|
   spec.name = 'rubocop-migration'
-  spec.version = Rubocop::Migration::VERSION
+  spec.version = RuboCop::Migration::VERSION
   spec.authors = ['Ryo Nakamura']
   spec.email = ['r7kamura@gmail.com']
 
