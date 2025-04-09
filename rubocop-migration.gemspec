@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Ryo Nakamura']
   spec.email = ['r7kamura@gmail.com']
 
-  spec.summary = 'RuboCop extension focused on ActiveRecord migration.'
+  spec.summary = 'RuboCop plugin for ActiveRecord migration.'
   spec.homepage = 'https://github.com/r7kamura/rubocop-migration'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 2.7'
@@ -16,6 +16,7 @@ Gem::Specification.new do |spec|
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = spec.homepage
   spec.metadata['changelog_uri'] = "#{spec.homepage}/releases"
+  spec.metadata['default_lint_roller_plugin'] = 'RuboCop::Migration::Plugin'
 
   spec.files = Dir.chdir(__dir__) do
     `git ls-files -z`.split("\x0").reject do |f|
@@ -27,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'activesupport'
-  spec.add_dependency 'rubocop', '>= 1.34'
+  spec.add_dependency 'lint_roller', '>= 1.1'
+  spec.add_dependency 'rubocop', '>= 1.72.1'
   spec.add_dependency 'rubocop-rails', '>= 2.24'
 end

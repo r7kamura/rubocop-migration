@@ -1,11 +1,11 @@
 plugins:
   - rubocop-internal_affairs
+  - rubocop-migration
   - rubocop-rspec
   - rubocop-performance
   - rubocop-rake
 
 require:
-  - rubocop-migration
   - sevencop
 
 AllCops:
