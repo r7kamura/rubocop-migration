@@ -170,6 +170,7 @@ module RuboCop
         )
           Parser.call(
             content: content,
+            parser_engine: respond_to?(:parser_engine) ? parser_engine : :parser_whitequark,
             path: path,
             target_ruby_version: target_ruby_version
           )
@@ -184,16 +185,19 @@ module RuboCop
         class Parser
           class << self
             # @param content [String]
+            # @param parser_engine [Symbol]
             # @param path [String]
             # @param target_ruby_version [#to_s]
             # @return [RuboCop::AST::Node]
             def call(
               content:,
+              parser_engine:,
               path:,
               target_ruby_version:
             )
               new(
                 content: content,
+                parser_engine: parser_engine,
                 path: path,
                 target_ruby_version: target_ruby_version
               ).call
@@ -201,50 +205,29 @@ module RuboCop
           end
 
           # @param content [String]
+          # @param parser_engine [Symbol]
           # @param path [String]
           # @param target_ruby_version [#to_s]
           def initialize(
             content:,
+            parser_engine:,
             path:,
             target_ruby_version:
           )
             @content = content
+            @parser_engine = parser_engine
             @path = path
             @target_ruby_version = target_ruby_version
           end
 
           # @return [RuboCop::AST::Node]
           def call
-            parser.parse(buffer)
-          end
-
-          private
-
-          # @return [Parser::Source::Buffer]
-          def buffer
-            ::Parser::Source::Buffer.new(
+            ::RuboCop::ProcessedSource.new(
+              @content,
+              @target_ruby_version,
               @path,
-              source: @content
-            )
-          end
-
-          # @return [RuboCop::AST::Builder]
-          def builder
-            ::RuboCop::AST::Builder.new
-          end
-
-          def parser
-            parser_class.new(builder)
-          end
-
-          # @return [Class]
-          def parser_class
-            ::Parser.const_get(parser_class_name)
-          end
-
-          # @return [String]
-          def parser_class_name
-            "Ruby#{@target_ruby_version.to_s.delete('.')}"
+              parser_engine: @parser_engine
+            ).ast
           end
         end
       end
