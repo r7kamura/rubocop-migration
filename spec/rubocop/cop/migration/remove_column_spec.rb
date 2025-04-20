@@ -40,6 +40,25 @@ RSpec.describe RuboCop::Cop::Migration::RemoveColumn, :config do
     end
   end
 
+  context 'with parser_prism engine' do
+    around do |example|
+      origin = ENV.fetch('PARSER_ENGINE', nil)
+      ENV['PARSER_ENGINE'] = 'parser_prism'
+      example.run
+      ENV['PARSER_ENGINE'] = origin
+    end
+
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class RemoveUsersSomeColumn < ActiveRecord::Migration[7.0]
+          def change
+            remove_column :users, :some_column
+          end
+        end
+      RUBY
+    end
+  end
+
   context 'when the column is not ignored by `self.ignored_columns = %w[...]`' do
     let(:model_content) do
       <<~RUBY
