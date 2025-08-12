@@ -134,7 +134,7 @@ Migration/RenameColumn:
 
 Migration/RenameTable:
   Description: |
-    Avoid removing tables that are in use.
+    Avoid renaming tables that are in use.
   Enabled: false
   Safe: false
   VersionAdded: '0.22'
