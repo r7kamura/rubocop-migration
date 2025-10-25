@@ -10,7 +10,7 @@ Install `rubocop-migration` gem:
 
 ```ruby
 # Gemfile
-gem 'rubocop-migration', require: false
+gem 'rubocop-migration'
 ```
 
 then add `rubocop-migration` to plugins section:
