@@ -1,7 +1,5 @@
 # rubocop-migration
 
-[![ci](https://github.com/r7kamura/rubocop-migration/actions/workflows/ci.yml/badge.svg)](https://github.com/r7kamura/rubocop-migration/actions/workflows/ci.yml)
-
 RuboCop plugin for ActiveRecord migration.
 
 ## Usage
