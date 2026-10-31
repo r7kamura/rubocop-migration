@@ -9,12 +9,17 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    name: test (Ruby ${{ matrix.ruby }})
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ['3.3', '3.4', '4.0']
     steps:
       - uses: actions/checkout@v2
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.6
+          ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - name: Run the default task
         run: bundle exec rake
