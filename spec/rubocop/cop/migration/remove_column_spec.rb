@@ -116,6 +116,43 @@ RSpec.describe RuboCop::Cop::Migration::RemoveColumn, :config do
     end
   end
 
+  context 'when the column is ignored by a namespaced model' do
+    let(:model_path) do
+      'app/models/accounts/user.rb'
+    end
+
+    let(:model_content) do
+      <<~RUBY
+        module Accounts
+          class User < ApplicationRecord
+            self.ignored_columns += %w[some_column]
+          end
+        end
+      RUBY
+    end
+
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class RemoveAccountsUsersSomeColumn < ActiveRecord::Migration[7.0]
+          def change
+            remove_column :accounts_users, :some_column
+          end
+        end
+      RUBY
+    end
+
+    it 'registers an offense for a column it does not ignore' do
+      expect_offense(<<~RUBY)
+        class RemoveAccountsUsersOtherColumn < ActiveRecord::Migration[7.0]
+          def change
+            remove_column :accounts_users, :other_column
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Make sure the column is already ignored by the running app before removing it.
+          end
+        end
+      RUBY
+    end
+  end
+
   context 'when table name is non literal node' do
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY)
