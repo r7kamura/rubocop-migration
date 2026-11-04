@@ -26,10 +26,21 @@ module RuboCop
       #       add_index :users, :name, algorithm: :concurrently
       #     end
       #   end
+      #
+      #   # good
+      #   class CreateUsers < ActiveRecord::Migration[7.0]
+      #     def change
+      #       create_table :users do |t|
+      #         t.string :name
+      #       end
+      #       add_index :users, :name
+      #     end
+      #   end
       class AddIndexConcurrently < RuboCop::Cop::Base
         extend AutoCorrector
 
         include ::RuboCop::Migration::CopConcerns::DisableDdlTransaction
+        include ::RuboCop::Migration::CopConcerns::NewTable
         include RangeHelp
 
         MSG = 'Use `algorithm: :concurrently` on adding indexes to existing tables in PostgreSQL.'
@@ -44,7 +55,7 @@ module RuboCop
         # @param node [RuboCop::AST::SendNode]
         # @return [void]
         def on_send(node)
-          if add_index_without_concurrency?(node)
+          if add_index_without_concurrency?(node) && !new_table?(node, find_table_node_from(node))
             add_offense(node) do |corrector|
               autocorrect(corrector, node)
             end
@@ -157,6 +168,17 @@ module RuboCop
         # @return [Array<RuboCop::AST::SendNode>]
         def duplicated_disable_ddl_transactions_from(node)
           disable_ddl_transactions_from(node)[1..] || []
+        end
+
+        # @param node [RuboCop::AST::SendNode]
+        # @return [RuboCop::AST::Node, nil]
+        def find_table_node_from(node)
+          case node.method_name
+          when :add_index
+            node.first_argument
+          else
+            node.each_ancestor(:block).first.send_node.first_argument
+          end
         end
 
         # @param node [RuboCop::AST::SendNode]

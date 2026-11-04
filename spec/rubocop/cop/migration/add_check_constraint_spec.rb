@@ -21,4 +21,19 @@ RSpec.describe RuboCop::Cop::Migration::AddCheckConstraint, :config do
       RUBY
     end
   end
+
+  context 'when `add_check_constraint` is used after `create_table` of the same table' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class CreateOrders < ActiveRecord::Migration[7.0]
+          def change
+            create_table :orders do |t|
+              t.integer :price
+            end
+            add_check_constraint :orders, "price > 0", name: "orders_price_positive"
+          end
+        end
+      RUBY
+    end
+  end
 end
