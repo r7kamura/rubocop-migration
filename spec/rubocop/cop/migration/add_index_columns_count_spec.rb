@@ -25,6 +25,24 @@ RSpec.describe RuboCop::Cop::Migration::AddIndexColumnsCount, :config do
     end
   end
 
+  context 'when an expression is given as a string on `add_index`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        add_index :users, 'lower(email)'
+      RUBY
+    end
+  end
+
+  context 'when an expression is given as a string on `index`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        create_table :users do |t|
+          t.index 'lower(email)'
+        end
+      RUBY
+    end
+  end
+
   context 'when columns count is greater than MaxColumnsCount on `add_index` but it is unique index' do
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY)

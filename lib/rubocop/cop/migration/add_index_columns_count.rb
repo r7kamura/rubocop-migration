@@ -100,7 +100,7 @@ module RuboCop
           case node.type
           when :array
             node.values.count
-          when :sym
+          when :str, :sym
             1
           end
         end
