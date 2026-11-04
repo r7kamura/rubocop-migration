@@ -55,7 +55,7 @@ module RuboCop
         # @param node [RuboCop::AST::SendNode]
         # @return [void]
         def on_send(node)
-          if add_index_without_concurrency?(node) && !new_table?(node, find_table_node_from(node))
+          if add_index_without_concurrency?(node) && !new_table?(find_table_node_from(node))
             add_offense(node) do |corrector|
               autocorrect(corrector, node)
             end

@@ -205,4 +205,38 @@ RSpec.describe RuboCop::Cop::Migration::AddIndexConcurrently, :config do
       RUBY
     end
   end
+
+  context 'when `add_index` is used after `create_table` of the same table with `if_not_exists: true`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        class AddIndexToUsersName < ActiveRecord::Migration[7.0]
+          disable_ddl_transaction!
+
+          def change
+            create_table :users, if_not_exists: true
+            add_index :users, :name
+            ^^^^^^^^^^^^^^^^^^^^^^^ Use `algorithm: :concurrently` on adding indexes to existing tables in PostgreSQL.
+          end
+        end
+      RUBY
+    end
+  end
+
+  context 'when `add_index` is used after `create_table` of the same table in `reversible`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        class AddIndexToUsersName < ActiveRecord::Migration[7.0]
+          disable_ddl_transaction!
+
+          def change
+            reversible do |direction|
+              direction.down { create_table :users }
+            end
+            add_index :users, :name
+            ^^^^^^^^^^^^^^^^^^^^^^^ Use `algorithm: :concurrently` on adding indexes to existing tables in PostgreSQL.
+          end
+        end
+      RUBY
+    end
+  end
 end

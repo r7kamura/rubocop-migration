@@ -36,4 +36,18 @@ RSpec.describe RuboCop::Cop::Migration::AddCheckConstraint, :config do
       RUBY
     end
   end
+
+  context 'when `add_check_constraint` is used after a conditional `create_table` of the same table' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        class CreateOrders < ActiveRecord::Migration[7.0]
+          def change
+            create_table :orders unless table_exists?(:orders)
+            add_check_constraint :orders, 'price > 0', name: 'orders_price_positive'
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Activate a check constraint in a separate migration in PostgreSQL.
+          end
+        end
+      RUBY
+    end
+  end
 end

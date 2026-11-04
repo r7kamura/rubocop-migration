@@ -117,7 +117,7 @@ module RuboCop
         def bad?(node)
           add_check_constraint?(node) &&
             !add_check_constraint_with_validate_false?(node) &&
-            !new_table?(node, node.first_argument)
+            !new_table?(node.first_argument)
         end
       end
     end
