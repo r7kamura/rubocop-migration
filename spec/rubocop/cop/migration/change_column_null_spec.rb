@@ -80,7 +80,7 @@ RSpec.describe RuboCop::Cop::Migration::ChangeColumnNull, :config do
       expect_offense(<<~RUBY)
         def change
           change_column_null :users, :name, true
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid simply setting `NOT NULL` constraint on an existing column in PostgreSQL.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Allow NULL in `up` instead of `change`, as rolling back `change` simply sets `NOT NULL` constraint again.
         end
       RUBY
 

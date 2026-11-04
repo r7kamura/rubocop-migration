@@ -33,10 +33,27 @@ module RuboCop
       #       remove_check_constraint :users, name: 'users_name_is_not_null'
       #     end
       #   end
+      #
+      #   # bad
+      #   class AllowNullOnUsersName < ActiveRecord::Migration[7.0]
+      #     def change
+      #       change_column_null :users, :name, true
+      #     end
+      #   end
+      #
+      #   # good
+      #   class AllowNullOnUsersName < ActiveRecord::Migration[7.0]
+      #     def up
+      #       change_column_null :users, :name, true
+      #     end
+      #   end
       class ChangeColumnNull < RuboCop::Cop::Base
         extend AutoCorrector
 
         MSG = 'Avoid simply setting `NOT NULL` constraint on an existing column in PostgreSQL.'
+
+        MSG_FOR_ALLOW_NULL_IN_CHANGE = 'Allow NULL in `up` instead of `change`, ' \
+                                       'as rolling back `change` simply sets `NOT NULL` constraint again.'
 
         RESTRICT_ON_SEND = %i[
           change_column_null
@@ -49,8 +66,7 @@ module RuboCop
           return if called_with_validate_constraint?(node)
 
           if allow_null?(node)
-            # Rolling back `change` sets `NOT NULL` again.
-            add_offense(node) if in_change_method?(node)
+            add_offense(node, message: MSG_FOR_ALLOW_NULL_IN_CHANGE) if in_change_method?(node)
             return
           end
 
