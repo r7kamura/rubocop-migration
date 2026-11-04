@@ -121,9 +121,10 @@ module RuboCop
         # @return [Array<String>]
         def find_ignored_column_names_from(table_name)
           pathname = model_pathname_from(
-            singularize(table_name)
+            directory: ::Pathname.new('app/models'),
+            snake_cased_model_name: singularize(table_name)
           )
-          return [] unless pathname.exist?
+          return [] unless pathname
 
           ignored_column_nodes = ignored_column_nodes_from(
             parse(
@@ -155,10 +156,28 @@ module RuboCop
           )
         end
 
+        # @note Tries `accounts_user.rb` first, then namespaces such as `accounts/user.rb`.
+        # @param directory [Pathname]
         # @param snake_cased_model_name [String]
-        # @return [Pathname]
-        def model_pathname_from(snake_cased_model_name)
-          ::Pathname.new("app/models/#{snake_cased_model_name}.rb")
+        # @return [Pathname, nil]
+        def model_pathname_from(
+          directory:,
+          snake_cased_model_name:
+        )
+          pathname = directory.join("#{snake_cased_model_name}.rb")
+          return pathname if pathname.exist?
+
+          snake_cased_model_name.scan(/(?<=[^_])_(?=[^_])/) do
+            namespace = ::Regexp.last_match.pre_match
+            next unless directory.join(namespace).directory?
+
+            pathname = model_pathname_from(
+              directory: directory.join(namespace),
+              snake_cased_model_name: ::Regexp.last_match.post_match
+            )
+            return pathname if pathname
+          end
+          nil
         end
 
         # @param content [String]
