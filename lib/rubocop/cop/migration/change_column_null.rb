@@ -33,10 +33,27 @@ module RuboCop
       #       remove_check_constraint :users, name: 'users_name_is_not_null'
       #     end
       #   end
+      #
+      #   # bad
+      #   class AllowNullOnUsersName < ActiveRecord::Migration[7.0]
+      #     def change
+      #       change_column_null :users, :name, true
+      #     end
+      #   end
+      #
+      #   # good
+      #   class AllowNullOnUsersName < ActiveRecord::Migration[7.0]
+      #     def up
+      #       change_column_null :users, :name, true
+      #     end
+      #   end
       class ChangeColumnNull < RuboCop::Cop::Base
         extend AutoCorrector
 
         MSG = 'Avoid simply setting `NOT NULL` constraint on an existing column in PostgreSQL.'
+
+        MSG_FOR_ALLOW_NULL_IN_CHANGE = 'Allow NULL in `up` instead of `change`, ' \
+                                       'as rolling back `change` simply sets `NOT NULL` constraint again.'
 
         RESTRICT_ON_SEND = %i[
           change_column_null
@@ -48,6 +65,11 @@ module RuboCop
         def on_send(node)
           return if called_with_validate_constraint?(node)
 
+          if allow_null?(node)
+            add_offense(node, message: MSG_FOR_ALLOW_NULL_IN_CHANGE) if in_change_method?(node)
+            return
+          end
+
           add_offense(node) do |corrector|
             autocorrect(corrector, node)
           end
@@ -55,6 +77,16 @@ module RuboCop
         alias on_csend on_send
 
         private
+
+        # @!method allow_null?(node)
+        #   @param node [RuboCop::AST::SendNode]
+        #   @return [Boolean]
+        def_node_matcher :allow_null?, <<~PATTERN
+          {
+            (send nil? :change_column_null _ _ true ...)
+            (call _ :change_null _ true ...)
+          }
+        PATTERN
 
         # @!method validate_constraint?(node)
         #   @param node [RuboCop::AST::SendNode]
@@ -202,6 +234,12 @@ module RuboCop
             column_name: column_name,
             constraint_name: "#{table_name}_#{column_name}_is_not_null"
           )
+        end
+
+        # @param node [RuboCop::AST::SendNode]
+        # @return [Boolean]
+        def in_change_method?(node)
+          node.each_ancestor(:def).first&.method?(:change) || false
         end
       end
     end
