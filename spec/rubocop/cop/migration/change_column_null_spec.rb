@@ -27,6 +27,32 @@ RSpec.describe RuboCop::Cop::Migration::ChangeColumnNull, :config do
     end
   end
 
+  context 'when `change_column_null` is called after `validate_check_constraint`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          validate_check_constraint :users, name: 'users_name_is_not_null'
+          change_column_null :users, :name, false
+          remove_check_constraint :users, name: 'users_name_is_not_null'
+        end
+      RUBY
+    end
+  end
+
+  context 'when `t.change_null` is called after `validate_check_constraint`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          validate_check_constraint :users, name: 'users_name_is_not_null'
+          change_table :users do |t|
+            t.change_null :name, false
+            t.remove_check_constraint name: 'users_name_is_not_null'
+          end
+        end
+      RUBY
+    end
+  end
+
   context 'when `change_column_null` is simply called' do
     it 'registers an offense' do
       expect_offense(<<~RUBY)
