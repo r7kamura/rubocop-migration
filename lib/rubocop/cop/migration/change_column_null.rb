@@ -28,7 +28,7 @@ module RuboCop
       #
       #   class ReplaceNotNullConstraintOnUsersName < ActiveRecord::Migration[7.0]
       #     def change
-      #       validate_constraint :users, name: 'users_name_is_not_null'
+      #       validate_check_constraint :users, name: 'users_name_is_not_null'
       #       change_column_null :users, :name, false
       #       remove_check_constraint :users, name: 'users_name_is_not_null'
       #     end
@@ -60,7 +60,7 @@ module RuboCop
         #   @param node [RuboCop::AST::SendNode]
         #   @return [Boolean]
         def_node_matcher :validate_constraint?, <<~PATTERN
-          (send nil? :validate_constraint ...)
+          (send nil? {:validate_constraint :validate_check_constraint} ...)
         PATTERN
 
         # @param corrector [RuboCop::Cop::Corrector]
