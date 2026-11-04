@@ -48,6 +48,12 @@ module RuboCop
         def on_send(node)
           return if called_with_validate_constraint?(node)
 
+          if allow_null?(node)
+            # Rolling back `change` sets `NOT NULL` again.
+            add_offense(node) if in_change_method?(node)
+            return
+          end
+
           add_offense(node) do |corrector|
             autocorrect(corrector, node)
           end
@@ -55,6 +61,16 @@ module RuboCop
         alias on_csend on_send
 
         private
+
+        # @!method allow_null?(node)
+        #   @param node [RuboCop::AST::SendNode]
+        #   @return [Boolean]
+        def_node_matcher :allow_null?, <<~PATTERN
+          {
+            (send nil? :change_column_null _ _ true ...)
+            (call _ :change_null _ true ...)
+          }
+        PATTERN
 
         # @!method validate_constraint?(node)
         #   @param node [RuboCop::AST::SendNode]
@@ -202,6 +218,12 @@ module RuboCop
             column_name: column_name,
             constraint_name: "#{table_name}_#{column_name}_is_not_null"
           )
+        end
+
+        # @param node [RuboCop::AST::SendNode]
+        # @return [Boolean]
+        def in_change_method?(node)
+          node.each_ancestor(:def).first&.method?(:change) || false
         end
       end
     end

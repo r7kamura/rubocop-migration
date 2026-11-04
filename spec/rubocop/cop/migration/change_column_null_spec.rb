@@ -53,6 +53,41 @@ RSpec.describe RuboCop::Cop::Migration::ChangeColumnNull, :config do
     end
   end
 
+  context 'when `change_column_null` allows NULL in `down`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        def down
+          change_column_null :users, :name, true
+        end
+      RUBY
+    end
+  end
+
+  context 'when `t.change_null` allows NULL in `up`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        def up
+          change_table :users do |t|
+            t.change_null :name, true
+          end
+        end
+      RUBY
+    end
+  end
+
+  context 'when `change_column_null` allows NULL in `change`' do
+    it 'registers an offense without autocorrection, as its rollback sets NOT NULL' do
+      expect_offense(<<~RUBY)
+        def change
+          change_column_null :users, :name, true
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid simply setting `NOT NULL` constraint on an existing column in PostgreSQL.
+        end
+      RUBY
+
+      expect_no_corrections
+    end
+  end
+
   context 'when `change_column_null` is simply called' do
     it 'registers an offense' do
       expect_offense(<<~RUBY)
