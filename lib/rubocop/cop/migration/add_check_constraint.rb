@@ -31,8 +31,20 @@ module RuboCop
       #       validate_check_constraint :orders, name: 'orders_price_positive'
       #     end
       #   end
+      #
+      #   # good
+      #   class CreateOrders < ActiveRecord::Migration[7.0]
+      #     def change
+      #       create_table :orders do |t|
+      #         t.integer :price
+      #       end
+      #       add_check_constraint :orders, 'price > 0', name: 'orders_price_positive'
+      #     end
+      #   end
       class AddCheckConstraint < RuboCop::Cop::Base
         extend AutoCorrector
+
+        include ::RuboCop::Migration::CopConcerns::NewTable
 
         MSG = 'Activate a check constraint in a separate migration in PostgreSQL.'
 
@@ -104,7 +116,8 @@ module RuboCop
         # @return [Boolean]
         def bad?(node)
           add_check_constraint?(node) &&
-            !add_check_constraint_with_validate_false?(node)
+            !add_check_constraint_with_validate_false?(node) &&
+            !new_table?(node.first_argument)
         end
       end
     end

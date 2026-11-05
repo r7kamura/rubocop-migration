@@ -6,6 +6,7 @@ module RuboCop
       autoload :BatchProcessing, 'rubocop/migration/cop_concerns/batch_processing'
       autoload :ColumnTypeMethod, 'rubocop/migration/cop_concerns/column_type_method'
       autoload :DisableDdlTransaction, 'rubocop/migration/cop_concerns/disable_ddl_transaction'
+      autoload :NewTable, 'rubocop/migration/cop_concerns/new_table'
     end
   end
 end

@@ -58,4 +58,48 @@ RSpec.describe RuboCop::Cop::Migration::AddColumnWithDefaultValue, :config do
       RUBY
     end
   end
+
+  context 'when `add_column` is used with non-nil `:default` option after `create_table` of the same table' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class CreateUsers < ActiveRecord::Migration[7.0]
+          def change
+            create_table :users do |t|
+              t.string :name
+            end
+            add_column :users, :some_column, :string, default: 'some value'
+          end
+        end
+      RUBY
+    end
+  end
+
+  context 'when `t.string` is used with non-nil `:default` option in `change_table` after `create_table` of the same table' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class CreateUsers < ActiveRecord::Migration[7.0]
+          def change
+            create_table :users
+            change_table :users do |t|
+              t.string :some_column, default: 'some value'
+            end
+          end
+        end
+      RUBY
+    end
+  end
+
+  context 'when `add_column` is used with non-nil `:default` option after `create_table` of another table' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        class CreateUsers < ActiveRecord::Migration[7.0]
+          def change
+            create_table :posts
+            add_column :users, :some_column, :string, default: 'some value'
+                                                      ^^^^^^^^^^^^^^^^^^^^^ Add the column without a default value then change the default.
+          end
+        end
+      RUBY
+    end
+  end
 end
