@@ -27,11 +27,22 @@ module RuboCop
       #       change_column_default :users, :some_column, 'some value'
       #     end
       #   end
+      #
+      #   # good
+      #   class CreateUsers < ActiveRecord::Migration[7.0]
+      #     def change
+      #       create_table :users do |t|
+      #         t.string :name
+      #       end
+      #       add_column :users, :some_column, :string, default: 'some value'
+      #     end
+      #   end
       class AddColumnWithDefaultValue < RuboCop::Cop::Base
         extend AutoCorrector
 
         include RangeHelp
         include ::RuboCop::Migration::CopConcerns::ColumnTypeMethod
+        include ::RuboCop::Migration::CopConcerns::NewTable
 
         MSG = 'Add the column without a default value then change the default.'
 
@@ -44,6 +55,7 @@ module RuboCop
         # @return [void]
         def on_send(node)
           return unless target_method?(node)
+          return if new_table?(find_table_node_from(node))
 
           default_option_node = non_nil_default_option_node_from(node)
           return unless default_option_node
